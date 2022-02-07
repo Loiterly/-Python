@@ -1,0 +1,64 @@
+import pyautogui
+import pyperclip
+import time
+
+def get_msg():
+    # txt文件设置要发送的内容，每条信息空行分开
+    file=open('微信炸号/abc.txt','r',encoding='utf-8')
+    reder=file.read()
+    content=reder.split('\n')
+    return content
+
+def send(msg):
+    # 赋值需要发送的内容到粘贴板
+    pyperclip.copy(msg)
+    # 模拟键盘复制粘贴动作
+    pyautogui.hotkey('ctrl','v')
+    # 发送信息
+    pyautogui.press('enter')
+
+def send_msg(friend):
+    select=input('请选择类型：1.有限发送，2.无限发送：')
+    if select=='1':
+        num=int(input('请输入要发送的次数：'))
+        # 模拟打开微信
+        pyautogui.hotkey('ctrl','alt','w')
+        # 搜索好友
+        pyautogui.hotkey('ctrl','f')
+        # 复制好友到粘贴板
+        pyperclip.copy(friend)
+        # 模拟复制粘贴
+        pyautogui.hotkey('ctrl','v')
+        time.sleep(1)
+        # 回车进入
+        pyautogui.press('enter')
+        # 一条一条的发送信息
+        a=0
+        while a<num:
+            for msg in get_msg():
+                send(msg)
+                # 时间间隔
+                time.sleep(0.1)
+            a+=1
+    elif select=='2':
+        # 模拟打开微信
+        pyautogui.hotkey('ctrl','alt','w')
+        # 搜索好友
+        pyautogui.hotkey('ctrl','f')
+        # 复制好友到粘贴板
+        pyperclip.copy(friend)
+        # 模拟复制粘贴
+        pyautogui.hotkey('ctrl','v')
+        time.sleep(1)
+        # 回车进入
+        pyautogui.press('enter')
+        while True:
+            for msg in get_msg():
+                send(msg)
+                # 时间间隔
+                time.sleep(0.1)
+
+if __name__=='__main__':
+    friend_name=input('请输入你要炸的微信好友备注：')
+    # 发送3次
+    send_msg(friend_name)
