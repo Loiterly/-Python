@@ -1,0 +1,61 @@
+import os
+
+class Debt():
+    def __init__(self,date):
+        self.date=date
+        while True:
+            tp=int(input('请选择类别:1.收入，2.支出，3.退出：'))
+            if tp==1:
+                a=self.income()
+            elif tp==2:
+                b=self.spend()
+            else:
+                print('结束，退出')
+                break
+        print('今日收入{}元，支出{}元'.format(a,b))
+                
+
+    def income(self):
+        income_sum=0
+        file_list=os.listdir('流水账记录/账本')
+        print('已经存在的账本有：{}'.format(file_list))
+        file=input('请输入你要打开的文件名，若要创建新的文件可直接输入新文件名：')
+        while True:
+            list1=['工资','奖金','其他']
+            tp1=int(input('请选择收入来源：1.工资，2.奖金，3.其他，4.退出：'))
+            if 0<tp1<4:
+                tp11=int(input('请输入收入金额：'))
+                income_sum+=tp11
+                w1="{}因{}收入{}元".format(self.date,list1[tp1-1],tp11)
+                print(w1)
+                with open('流水账记录/账本/'+file,'a',encoding='utf-8') as f1:
+                    f1.write(w1+'\n')
+            else:
+                print('退出！')
+                break
+        print('今日共计收入{}元'.format(income_sum))
+        return income_sum
+
+    def spend(self):
+        spend_sum=0
+        file_list=os.listdir('流水账记录/账本')
+        print('已经存在的账本有：{}'.format(file_list))
+        file=input('请输入你要打开的文件名，若要创建新的文件可直接输入新文件名：')
+        while True:
+            list2=['饮食','出行','学习','娱乐','服饰','其他']
+            tp2=int(input('请选择支出类别：1.饮食，2.出行，3.学习，4.娱乐，5.服饰，6.其他，7.退出：'))
+            if 0<tp2<=6:
+                tp22=int(input('请输入金额'))
+                spend_sum+=tp22
+                w2='{}因{}支出{}元'.format(self.date,list2[tp2-1],tp22)
+                print(w2)
+                with open('流水账记录/账本/'+file,'a',encoding='utf-8') as f1:
+                    f1.write(w2+'\n')
+            else:
+                print('退出！')
+                break
+        print('今日共计支出{}元'.format(spend_sum))
+        return spend_sum
+
+date=input('请输入日期：')
+debt=Debt(date)
